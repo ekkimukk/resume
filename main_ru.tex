@@ -1,0 +1,275 @@
+\documentclass[10pt, letterpaper]{article}
+
+% Packages:
+\usepackage[
+    ignoreheadfoot, % set margins without considering header and footer
+    top=2 cm, % seperation between body and page edge from the top
+    bottom=2 cm, % seperation between body and page edge from the bottom
+    left=2 cm, % seperation between body and page edge from the left
+    right=2 cm, % seperation between body and page edge from the right
+    footskip=1.0 cm, % seperation between body and footer
+    % showframe % for debugging
+]{geometry} % for adjusting page geometry
+\usepackage{titlesec} % for customizing section titles
+\usepackage{tabularx} % for making tables with fixed width columns
+\usepackage{array} % tabularx requires this
+\usepackage[dvipsnames]{xcolor} % for coloring text
+\definecolor{primaryColor}{RGB}{0, 79, 144} % define primary color
+\usepackage{enumitem} % for customizing lists
+\usepackage{fontawesome5} % for using icons
+\usepackage{amsmath} % for math
+\usepackage[
+    pdftitle={Danila's resume},
+    pdfauthor={Danila Danenko},
+    pdfcreator={LaTeX with RenderCV},
+    colorlinks=true,
+    urlcolor=primaryColor
+]{hyperref} % for links, metadata and bookmarks
+\usepackage[pscoord]{eso-pic} % for floating text on the page
+\usepackage{calc} % for calculating lengths
+\usepackage{bookmark} % for bookmarks
+\usepackage{lastpage} % for getting the total number of pages
+\usepackage{changepage} % for one column entries (adjustwidth environment)
+\usepackage{paracol} % for two and three column entries
+\usepackage{ifthen} % for conditional statements
+\usepackage{needspace} % for avoiding page brake right after the section title
+\usepackage{iftex} % check if engine is pdflatex, xetex or luatex
+\usepackage[T2A]{fontenc}
+
+% Ensure that generate pdf is machine readable/ATS parsable:
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+    % \usepackage[T1]{fontenc} % this breaks sb2nov
+    \usepackage[utf8]{inputenc}
+\fi
+
+
+
+% Some settings:
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
+\pagestyle{empty} % no header or footer
+\setcounter{secnumdepth}{1} % no section numbering
+\setlength{\parindent}{1pt} % no indentation
+\setlength{\topskip}{1pt} % no top skip
+\setlength{\columnsep}{1cm} % set column seperation
+\makeatletter
+\let\ps@customFooterStyle\ps@plain % Copy the plain style to customFooterStyle
+\patchcmd{\ps@customFooterStyle}{\thepage}{
+    \color{gray}\textit{\small Даненко Данила}
+}{}{} % replace number by desired string
+\makeatother
+\pagestyle{customFooterStyle}
+
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+
+\titlespacing{\section}{
+    % left space:
+    -1pt
+}{
+    % top space:
+    0.5 cm
+}{
+    % bottom space:
+    0.5 cm
+} % section title spacing
+
+\renewcommand\labelitemi{$\circ$} % custom bullet points
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0.20 cm,
+        parsep=0.20 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=0.4 cm + 10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights
+
+\newenvironment{highlightsforbulletentries}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights for bullet entries
+
+
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{
+        0.2 cm + 0.00001 cm
+    }{
+        0.2 cm + 0.00001 cm
+    }
+}{
+    \end{adjustwidth}
+} % new environment for one column entries
+
+\newenvironment{twocolentry}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 4.5 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedleft \secondColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for two column entries
+
+\newenvironment{header}{
+    \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
+}{
+    \par\kern\topsep
+} % new environment for the header
+
+\newcommand{\placelastupdatedtext}{% \placetextbox{<horizontal pos>}{<vertical pos>}{<stuff>}
+  \AddToShipoutPictureFG*{% Add <stuff> to current page foreground
+    \put(
+        \LenToUnit{\paperwidth-2 cm-0.2 cm+0.05cm},
+        \LenToUnit{\paperheight-1.0 cm}
+    ){\vtop{{\null}\makebox[0pt][c]{
+        \small\color{gray}\textit{Резюме обновлено 30 ноября 2024}\hspace{\widthof{Резюме обновлено 30 ноября 2024}}
+    }}}%
+  }%
+}%
+
+% save the original href command in a new command:
+\let\hrefWithoutArrow\href
+
+% new command for external links:
+\renewcommand{\href}[2]{\hrefWithoutArrow{#1}{\ifthenelse{\equal{#2}{}}{ }{#2 }\raisebox{.15ex}{\footnotesize \faExternalLink*}}}
+
+
+\begin{document}
+    \newcommand{\AND}{\unskip
+        \cleaders\copy\ANDbox\hskip\wd\ANDbox
+        \ignorespaces
+    }
+    \newsavebox\ANDbox
+    \sbox\ANDbox{}
+
+    \placelastupdatedtext
+    \begin{header}
+        \textbf{\fontsize{24 pt}{24 pt}\selectfont Даненко Данила Андреевич} %заголовок главный
+
+        \vspace{0.3 cm}
+
+        \normalsize
+        \mbox{{\color{black}\footnotesize\faMapMarker*}\hspace*{0.13cm}Санкт-Петербург}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{mailto: songbirdwhosing@gmail.com}{\color{black}{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}songbirdwhosing@gmail.com}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{tel:+90-541-999-99-99}{\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm} +79939901409}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{https://github.com/ekkimukk}{\color{black}{\footnotesize\faGithub}\hspace*{0.13cm}ekkimukk}}%
+    \end{header}
+
+    \vspace{0.3 cm - 0.3 cm}
+
+
+    \section{О себе}
+    
+    \begin{onecolentry}
+        \textbf{Я студент Санкт-Петербургского государственного университета телекоммуникаций им. проф. М.А. Бонч-Бруевича. Мне нравится программирование, системное администрирование и всё связанное с облачной инфраструктурой. Ищу возможности для практики и дальнейшего профессионального развития, а также хочу применять свои знания для решения реальных задач.}
+    \end{onecolentry}
+
+    \section{Образование}
+
+        \begin{twocolentry}{
+
+        \textit{2026}}
+            \textbf{Санкт-Петербургский государственный университет телекоммуникаций им. проф. М.А. Бонч-Бруевича}
+
+            \textit{Факультет информационных технологий и программной инженерии (ИТПИ)}
+
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+
+                \item \textbf{Специальность / Профиль:} Программная инженерия / Разработка программного обеспечения и приложений искусственного интеллекта в киберфизических системах
+            \end{highlights}
+        \end{onecolentry}
+        
+        \end{twocolentry}
+
+
+    \section{Опыт}
+    \begin{twocolentry}{
+        \textit{Фев 2024 – Июн 2024}}
+        
+            \textbf{Курс по основам сетевых технологий}
+                \item Завершил курс «Основы сетевых технологий» от Академии Eltex, успешно сдав финальную аттестацию и получив сертификат.
+
+            \textit{}
+        
+
+        \begin{onecolentry}
+            \begin{highlights}
+                \item Знание принципов работы основных сетевых протоколов 
+                \item Практический опыт работы с оборудованием Cisco
+                \item Понимание модели OSI на всех её уровнях
+
+            \end{highlights}
+        \end{onecolentry}
+        \end{twocolentry}
+
+    \vspace{0.5 cm}
+    \begin{twocolentry}{
+        \textit{Сен 2024 – Окт 2024}
+        \textit{Великий Новгород}}
+        
+            \textbf{Участник интенсива}
+                \item Успешно завершил 26-дневный отборочный интенсив «Школы 21» от Сбера, где разработал 16 индивидуальных и 3 групповых проекта на языке программирования C.
+
+            \textit{}
+
+        \begin{onecolentry}
+            \begin{highlights}
+                \item Опыт командной разработки
+                \item Практический опыт использования Git и GitLab в рамках реальных проектов
+                \item Навык работы с Bash для автоматизации задач
+                \item Опыт использования Linux, включая администрирование и разработку
+
+            \end{highlights}
+        \end{onecolentry}
+        \end{twocolentry}
+
+
+    \section{Навыки}
+        \begin{onecolentry}
+            \textbf{Знание иностранных языков}: Английский - (B1) - Средний
+        \end{onecolentry}
+         \vspace{0.2 cm}
+        
+        \begin{onecolentry}
+            \textbf{Основные навыки}:
+            \colorbox{gray!15}{Java} 
+            \colorbox{gray!15}{C/C++} 
+            \colorbox{gray!15}{Bash}
+            \colorbox{gray!15}{Nix/NixOS}
+            \colorbox{gray!15}{Linux}
+            \colorbox{gray!15}{MySQL}
+            \colorbox{gray!15}{MariaDB}
+            \colorbox{gray!15}{MongoDB}
+            \colorbox{gray!15}{Git}
+            \colorbox{gray!15}{GitLab}
+            \colorbox{gray!15}{GitLab CI/CD}
+            \colorbox{gray!15}{Docker}
+            \colorbox{gray!15}{Azure}
+            \colorbox{gray!15}{Apache}
+            \colorbox{gray!15}{Tomcat}
+        \end{onecolentry}
+
+\end{document}
+
